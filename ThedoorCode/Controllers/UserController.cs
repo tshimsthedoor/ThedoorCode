@@ -27,8 +27,8 @@ namespace ThedoorCode.Controllers
         {
             UserModel userModel = new UserModel();
             userModel.Experiences.Add(new Experience() { ExperienceId = 1 });
-            userModel.Experiences.Add(new Experience() { ExperienceId = 2 });
-            userModel.Experiences.Add(new Experience() { ExperienceId = 3 });
+            //userModel.Experiences.Add(new Experience() { ExperienceId = 2 });
+            //userModel.Experiences.Add(new Experience() { ExperienceId = 3 });
             return View(userModel);
         }
 
