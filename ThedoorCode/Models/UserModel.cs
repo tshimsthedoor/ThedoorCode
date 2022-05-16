@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +39,9 @@ namespace ThedoorCode.Models
 
         public string PhotoUrl { get; set; }
 
+        [Required(ErrorMessage ="Please choose the Profile Photo")]
+        [Display(Name="Profile Photo")]
+        [NotMapped]
         public IFormFile ProfilePhoto { get; set; }
     }
 }
