@@ -51,13 +51,14 @@
                     <div class="form-group col-8 p-0">
                         <label asp-for="ProfilePhoto" class="control-label"></label>
                         <div class="custom-file">
-                            <input asp-for="ProfilePhoto" class="custom-file-input" id="customFile" onchange="document.getEle('PreviewPhoto').src = window.UR.createObjectURL(this)" />
+                            <input asp-for="ProfilePhoto" class="custom-file-input" id="customFile" onchange="document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.getElementById)" />
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
                         <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
                     </div>
                     <div class="form-group col-4">
-                        <img id="PreviewPhoto" src="~/images/noimage.png" alt="Logo Image" width="125" height="125" style="border:1px; margin-top:20px;" />
+                        
+                        <img id="PreviewPhoto" src="~/images/noimage.jpg" alt="Logo Image" width="125" height="125" style="border:1px; margin-top:20px;" />
                     </div>
                 </div>
 
@@ -112,10 +113,15 @@
 
 
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        })
+    </script>
 }
