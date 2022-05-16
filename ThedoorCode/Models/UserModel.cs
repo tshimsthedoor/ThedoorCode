@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -34,5 +35,9 @@ namespace ThedoorCode.Models
         public int TotalExperience { get; set; }
 
         public virtual List<Experience> Experiences { get; set; } = new List<Experience>();// details very important
+
+        public string PhotoUrl { get; set; }
+
+        public IFormFile ProfilePhoto { get; set; }
     }
 }
