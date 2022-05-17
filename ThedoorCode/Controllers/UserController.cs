@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ThedoorCode.Data;
 using ThedoorCode.Models;
@@ -11,9 +14,12 @@ namespace ThedoorCode.Controllers
 
         private readonly UserDbContext _context;
 
-        public UserController(UserDbContext context)
+        private readonly IWebHostEnvironment _webHost;
+
+        public UserController(UserDbContext context, IWebHostEnvironment webHost)
         {
             _context = context;
+            _webHost = webHost;
         }
         public IActionResult Index()
         {
@@ -40,9 +46,29 @@ namespace ThedoorCode.Controllers
                 if (experience.CompanyName == null || experience.CompanyName.Length == 0)
                     userModel.Experiences.Remove(experience);
             }
+
+            string uniqueFileName = GetUploadFileName(userModel);
+            userModel.PhotoUrl = uniqueFileName;
+
             _context.Add(userModel);
             _context.SaveChanges();
             return RedirectToAction("index");
+        }
+
+        private string GetUploadFileName(UserModel userModel)
+        {
+            string uniqueFileName = null;
+            if(userModel.ProfilePhoto != null)
+            {
+                string uploadFolder = Path.Combine(_webHost.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + userModel.ProfilePhoto.FileName;
+                string filePath = Path.Combine(uploadFolder, uniqueFileName);
+                using(var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    userModel.ProfilePhoto.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

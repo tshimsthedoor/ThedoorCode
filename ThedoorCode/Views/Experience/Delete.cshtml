@@ -32,8 +32,9 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.YearsWorked)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.YearsWorked)
+            <img src="@("~/images/" + Model.CompanyName)" asp-append-version="true" width="250" height="250" />
         </dd>
     </dl>
     
