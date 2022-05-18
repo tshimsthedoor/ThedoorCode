@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using ThedoorCode.Models;
 
 namespace ThedoorCode.Data
@@ -20,5 +19,8 @@ namespace ThedoorCode.Data
         public virtual DbSet<Experience> Experiences { get; set; }
         public virtual DbSet<ImageModel> ImageModels { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

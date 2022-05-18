@@ -9,20 +9,13 @@ namespace ThedoorCode.Models
 {
     public class ImageModel
     {
-
-
-        public ImageModel()
-        {
-
-        }
-
         [Key]
-        public int PostId { get; set; }
+        public int ImageId { get; set; }
 
         [ForeignKey("UserModel")] // Very Important
         public int UserId { get; set; }
 
-        public string  Description { get; set; }
+        public string Description { get; set; }
 
         public string Images { get; set; }
 
@@ -31,8 +24,6 @@ namespace ThedoorCode.Models
         public int Latitude { get; set; }
 
         public int Longitude { get; set; }
-
-        public virtual UserModel Author { get; private set; } // Very Important
 
         public virtual Review Review { get; set; }
     }

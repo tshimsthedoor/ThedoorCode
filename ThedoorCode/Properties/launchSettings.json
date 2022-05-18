@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:63896",
-      "sslPort": 44396
+      "applicationUrl": "http://localhost:52086",
+      "sslPort": 44378
     }
   },
   "profiles": {
@@ -18,7 +18,6 @@
     },
     "ThedoorCode": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {

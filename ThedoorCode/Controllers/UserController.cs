@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ThedoorCode.Data;
 using ThedoorCode.Models;
 
@@ -58,12 +61,12 @@ namespace ThedoorCode.Controllers
         private string GetUploadFileName(UserModel userModel)
         {
             string uniqueFileName = null;
-            if(userModel.ProfilePhoto != null)
+            if (userModel.ProfilePhoto != null)
             {
                 string uploadFolder = Path.Combine(_webHost.WebRootPath, "images");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + userModel.ProfilePhoto.FileName;
                 string filePath = Path.Combine(uploadFolder, uniqueFileName);
-                using(var fileStream = new FileStream(filePath, FileMode.Create))
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     userModel.ProfilePhoto.CopyTo(fileStream);
                 }

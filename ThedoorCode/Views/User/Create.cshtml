@@ -6,8 +6,8 @@
 
 <div class="col-11 mx-auto pt-0 p-0">
     <div class="card">
-        <div class="card-header bg-primary text-uppercase text-white" style="height:45px;">
-            <h4>Create User Profile</h4>
+        <div class="card-header bg-primary text-uppercase text-white text-center" style="height:45px;">
+            <h2>Create User Profile</h2><hr />
         </div>
         <form enctype="multipart/form-data" asp-action="Create">
             <div class="row">
@@ -53,16 +53,16 @@
                         <div class="custom-file">
 
 
-                            <input accept="image/*" asp-for="ProfilePhoto" class="custom-file-input" id="customFile" onchange="document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.files)" />
+                            <input accept="image/*" asp-for="ProfilePhoto" class="custom-file-inputbtn btn-secondary" id="customFile" onchange="document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.files)" />
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
                         <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
                     </div>
-                    
+
                     <div class="form-group col-4">
 
                         <img id="PreviewPhoto" src="~/images/noimage.jpg" alt="Logo Image" width="125" height="125" style="border:1px; margin-top:20px;" />
-                        
+
                     </div>
                 </div>
 
@@ -96,7 +96,7 @@
                                     <td>
                                         <button id="btndummy-@i" type="button" class="btn btn-sm invisible">Dummy</button>
 
-                                        <button id="btnadd-@i" type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem(this)" style="left:90%;position:absolute;">Add</button>
+                                        <button id="btnadd-@i" type="button" class="btn btn-primary text-end visible" onclick="AddItem(this)" style="left:90%;position:absolute;">Add</button>
                                         <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)" style="left:90%;position:absolute;">Delete</button>
 
                                     </td>
@@ -108,17 +108,17 @@
                 </div>
 
                 <input type="hidden" id="hideLastIndex" value="0" />
-                
+
                 <div class="col-12 btn-group">
                     <div class="col-6 form-group text-right p-2">
                         <a asp-action="Index" class="btn btn-secondary">&nbsp;Back&nbsp;</a>
                     </div>
-                    <div class="col-6 form-group text-left p-2">
+                    <div class="col-6 form-group text-left text-end p-2">
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                 </div>
-             </div>       
-                
+            </div>
+
 
 
         </form>
@@ -177,6 +177,6 @@
             addBtn.classList.add("invisible");
         }
 
-      
+
     </script>
 }
