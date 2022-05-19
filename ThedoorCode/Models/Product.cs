@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ThedoorCode.Models
 {
     public class Product
     {
-        public int ID { get; set; }
+        public long ProductID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        [DisplayFormat(DataFormatString = "{0:c}")]
+        [Column(TypeName = "decimal(8, 2)")]
         public decimal Price { get; set; }
-        public int? CategoryID { get; set; }
-        public virtual Category Category { get; set; }
+        public string Category { get; set; }
+
     }
 }

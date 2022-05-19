@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ThedoorCode.Migrations
+namespace ThedoorCode.Migrations.UserDb
 {
-    public partial class InitialCreate : Migration
+    public partial class ChangeTheValue2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

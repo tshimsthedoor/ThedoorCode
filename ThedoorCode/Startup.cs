@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThedoorCode.Data;
+using ThedoorCode.Models;
 
 namespace ThedoorCode
 {
@@ -22,16 +23,28 @@ namespace ThedoorCode
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<UserDbContext>();
+
+            services.AddDbContext<StoreDbContext>(options =>
+                options.UseSqlServer(
+                Configuration.GetConnectionString("StoreConnection")));
+
+
+            services.AddScoped<IStoreRepository, EFStoreRepository>();
+
+            // Add application services.
+            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            //services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -57,14 +70,15 @@ namespace ThedoorCode
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            //SeedData.Initialize(app.ApplicationServices);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=User}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+            SeedData.EnsurePopulated(app);
         }
     }
 }

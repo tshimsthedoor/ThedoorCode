@@ -11,6 +11,8 @@ namespace ThedoorCode.Controllers
 {
     public class HomeController : Controller
     {
+
+       
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -18,11 +20,8 @@ namespace ThedoorCode.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+        //public IActionResult Index() => View(products);
+        
         public IActionResult Privacy()
         {
             return View();
