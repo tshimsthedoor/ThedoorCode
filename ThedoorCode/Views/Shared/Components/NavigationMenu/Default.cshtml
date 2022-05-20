@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<string>
 <a class="btn btn-block btn-outline-secondary" asp-action="Index"
-   asp-controller="Home" asp-route-category="">
-    Home
+   asp-controller="Product" asp-route-category="">
+    <i class="bi bi-house"></i>
 </a>
 @foreach (string category in Model)
 {
     <a class="btn btn-block btn-outline-secondary"
-       asp-action="Index" asp-controller="Home"
+       asp-action="Index" asp-controller="Product"
        asp-route-category="@category"
-       asp-route-productPage="1">
-        @category
+       asp-route-productPage="1" >
+        @category <i class="bi bi-house"></i>
     </a>
 }
