@@ -74,9 +74,18 @@ namespace ThedoorCode
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=User}/{action=Index}/{id?}");
+                   name: "default",
+                   pattern: "{controller=User}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("catpage",
+                        "{category}/Page{productPage:int}",
+                    new { Controller = "Product", action = "Index" });
+                endpoints.MapControllerRoute("page", "Page{productPage:int}",
+                    new { Controller = "Product", action = "Index", productPage = 1 });
+
+               
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
+
             });
             SeedData.EnsurePopulated(app);
         }

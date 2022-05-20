@@ -1,14 +1,17 @@
-﻿@model IQueryable<Product>
+﻿@model ProductsListViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Product";
+    Layout = "~/Views/Shared/_ProductLayout.cshtml";
 }
 
 
-@foreach (var p in Model)
+
+@foreach (var p in Model.Products)
 {
-    <div>
-        <h3>@p.Name</h3>
-        @p.Description
-        <h4>@p.Price.ToString("c")</h4>
-    </div>
+<partial name="ProductSummary" model="p" />
 }
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
+     class="btn-group pull-right m-1">
+</div>
