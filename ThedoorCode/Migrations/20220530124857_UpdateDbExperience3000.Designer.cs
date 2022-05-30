@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThedoorCode.Data;
 
-namespace ThedoorCode.Migrations.UserDb
+namespace ThedoorCode.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220519094922_ChangeTheValue2")]
-    partial class ChangeTheValue2
+    [Migration("20220530124857_UpdateDbExperience3000")]
+    partial class UpdateDbExperience3000
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

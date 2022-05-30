@@ -33,13 +33,10 @@ namespace ThedoorCode.Models
 
         [Required]
         [Range(1, 25, ErrorMessage = "Currently, We Have no Positions Vacant for Your Experience")]
-
-        [DisplayName("Total Experience")]
         public int TotalExperience { get; set; }
 
         public virtual List<Experience> Experiences { get; set; } = new List<Experience>();// details very important
 
-        [DisplayName("Profile")]
         public string PhotoUrl { get; set; }
 
         [Required(ErrorMessage = "Please choose the Profile Photo")]

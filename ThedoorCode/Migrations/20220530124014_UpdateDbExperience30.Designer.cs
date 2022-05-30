@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThedoorCode.Data;
 
-namespace ThedoorCode.Migrations.UserDb
+namespace ThedoorCode.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220530124014_UpdateDbExperience30")]
+    partial class UpdateDbExperience30
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,10 +234,7 @@ namespace ThedoorCode.Migrations.UserDb
                     b.Property<string>("Designation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserModelUserId")
+                    b.Property<int?>("UserId1")
                         .HasColumnType("int");
 
                     b.Property<int>("YearsWorked")
@@ -243,7 +242,7 @@ namespace ThedoorCode.Migrations.UserDb
 
                     b.HasKey("ExperienceId");
 
-                    b.HasIndex("UserModelUserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Experiences");
                 });
@@ -390,9 +389,11 @@ namespace ThedoorCode.Migrations.UserDb
 
             modelBuilder.Entity("ThedoorCode.Models.Experience", b =>
                 {
-                    b.HasOne("ThedoorCode.Models.UserModel", null)
+                    b.HasOne("ThedoorCode.Models.UserModel", "UserId")
                         .WithMany("Experiences")
-                        .HasForeignKey("UserModelUserId");
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("UserId");
                 });
 
             modelBuilder.Entity("ThedoorCode.Models.ImageModel", b =>

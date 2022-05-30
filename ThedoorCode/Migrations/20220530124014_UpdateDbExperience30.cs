@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ThedoorCode.Migrations.UserDb
+namespace ThedoorCode.Migrations
 {
-    public partial class ChangeTheValue2 : Migration
+    public partial class UpdateDbExperience30 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -215,18 +215,17 @@ namespace ThedoorCode.Migrations.UserDb
                 {
                     ExperienceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId1 = table.Column<int>(type: "int", nullable: true),
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    YearsWorked = table.Column<int>(type: "int", nullable: false),
-                    UserModelUserId = table.Column<int>(type: "int", nullable: true)
+                    YearsWorked = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Experiences", x => x.ExperienceId);
                     table.ForeignKey(
-                        name: "FK_Experiences_UserModels_UserModelUserId",
-                        column: x => x.UserModelUserId,
+                        name: "FK_Experiences_UserModels_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "UserModels",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
@@ -272,9 +271,9 @@ namespace ThedoorCode.Migrations.UserDb
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Experiences_UserModelUserId",
+                name: "IX_Experiences_UserId1",
                 table: "Experiences",
-                column: "UserModelUserId");
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImageModels_ReviewId",

@@ -1,6 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ThedoorCode.Models
 {
@@ -15,18 +18,13 @@ namespace ThedoorCode.Models
         public int ExperienceId { get; set; }
 
         [ForeignKey("UserModel")] // Very Important
-        public int UserId { get; set; }
+        public int UserId { get; set; } 
 
-        //[DisplayName("Name")]
-        //public virtual UserModel UserModel { get; private set; } // Very Important
-
-        [DisplayName("Company Name")]
         public string CompanyName { get; set; }
 
         public string Designation { get; set; }
 
         [Required]
-        [DisplayName("Years Worked")]
         public int YearsWorked { get; set; }
     }
 }
