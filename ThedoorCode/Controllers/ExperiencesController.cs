@@ -46,6 +46,7 @@ namespace ThedoorCode.Controllers
         // GET: Experiences/Create
         public IActionResult Create()
         {
+            LoadUserModels();
             return View();
         }
 
@@ -62,6 +63,7 @@ namespace ThedoorCode.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            LoadUserModels();
             return View(experience);
         }
 
@@ -78,6 +80,7 @@ namespace ThedoorCode.Controllers
             {
                 return NotFound();
             }
+            LoadUserModels();
             return View(experience);
         }
 
@@ -113,6 +116,7 @@ namespace ThedoorCode.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            LoadUserModels();
             return View(experience);
         }
 
@@ -149,5 +153,17 @@ namespace ThedoorCode.Controllers
         {
             return _context.Experiences.Any(e => e.ExperienceId == id);
         }
+
+        private void LoadUserModels()
+        {
+            var userModels = _context.UserModels.Select(c => new SelectListItem
+            {
+                Value = c.UserId.ToString(),
+                Text = c.Name
+
+            });
+            ViewBag.UserId = userModels;
+        }
+
     }
 }
