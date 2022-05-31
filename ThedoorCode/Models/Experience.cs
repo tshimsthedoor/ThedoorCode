@@ -18,13 +18,11 @@ namespace ThedoorCode.Models
         public int ExperienceId { get; set; }
 
         [ForeignKey("UserModel")] // Very Important
-        public int UserId { get; set; }
-
-        public virtual UserModel UserModel { get; private set; } // Very Important
+        public int UserId { get; set; } 
 
         public string CompanyName { get; set; }
 
-        public string  Designation { get; set; }
+        public string Designation { get; set; }
 
         [Required]
         public int YearsWorked { get; set; }

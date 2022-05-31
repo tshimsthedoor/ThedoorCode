@@ -12,7 +12,7 @@ namespace ThedoorCode.Models
     public class UserModel
     {
         [Key]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [StringLength(150)]
@@ -23,7 +23,7 @@ namespace ThedoorCode.Models
         public string Gender { get; set; } = "";
 
         [Required]
-        [Range(25, 55, ErrorMessage ="Currently, We Have no Positions Vacant for Your Age")]
+        [Range(25, 55, ErrorMessage = "Currently, We Have no Positions Vacant for Your Age")]
         [DisplayName("Age in Years")]
         public int Age { get; set; }
 
@@ -32,15 +32,15 @@ namespace ThedoorCode.Models
         public string Qualification { get; set; } = "";
 
         [Required]
-        [Range(1,25, ErrorMessage = "Currently, We Have no Positions Vacant for Your Experience")]
+        [Range(1, 25, ErrorMessage = "Currently, We Have no Positions Vacant for Your Experience")]
         public int TotalExperience { get; set; }
 
         public virtual List<Experience> Experiences { get; set; } = new List<Experience>();// details very important
 
         public string PhotoUrl { get; set; }
 
-        [Required(ErrorMessage ="Please choose the Profile Photo")]
-        [Display(Name="Profile Photo")]
+        [Required(ErrorMessage = "Please choose the Profile Photo")]
+        [Display(Name = "Profile Photo")]
         [NotMapped]
         public IFormFile ProfilePhoto { get; set; }
     }
