@@ -2,6 +2,7 @@
 using ECartAppDemo.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,9 +33,26 @@ namespace ECartAppDemo.Controllers
             return View(objItemViewModel);
         } 
 
+        [HttpPost]
         public JsonResult Index(ItemViewModel objItemViewModel)
         {
-            return Json(data: "HHHH", JsonRequestBehavior.AllowGet);
+            string newImage = Guid.NewGuid() + Path.GetExtension(objItemViewModel.ImagePath.FileName);
+            objItemViewModel.ImagePath.SaveAs(Server.MapPath("~/Images/" + newImage));
+
+            Item objItem = new Item();
+            objItem.ImagePath = "~/Images/" + newImage;
+            objItem.CategoryId = objItemViewModel.CategoryId;
+            objItem.Description = objItemViewModel.Description;
+            objItem.ItemCode = objItemViewModel.ItemCode;
+            objItem.ItemId = Guid.NewGuid();
+            objItem.ItemNam = objItemViewModel.ItemName;
+            objItem.ItemPrice = objItemViewModel.ItemPrice;
+            objECartDbEntities.Items.Add(objItem);
+            objECartDbEntities.SaveChanges();
+
+
+
+            return Json(data: new { Success = true, Message = "Item is added successfully." }, JsonRequestBehavior.AllowGet);
         }
         
     }

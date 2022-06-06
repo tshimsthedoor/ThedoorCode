@@ -23,7 +23,7 @@ namespace ThedoorCode.Pages
 
         public IActionResult OnPost(long productId, string returnUrl)
         {
-            Product product = repository.Products
+            var product = repository.Products
             .FirstOrDefault(p => p.ProductID == productId);
             Cart.AddItem(product, 1);
             return RedirectToPage(new { returnUrl });

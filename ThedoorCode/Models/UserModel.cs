@@ -43,5 +43,7 @@ namespace ThedoorCode.Models
         [Display(Name = "Profile Photo")]
         [NotMapped]
         public IFormFile ProfilePhoto { get; set; }
+
+     
     }
 }
