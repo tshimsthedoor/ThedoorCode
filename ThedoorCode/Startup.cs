@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,7 @@ namespace ThedoorCode
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>() //Append AddRoles to add Role services
                 .AddEntityFrameworkStores<UserDbContext>();
 
             services.AddDbContext<StoreDbContext>(options =>
@@ -48,6 +50,14 @@ namespace ThedoorCode
             //services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+            });
+
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));

@@ -14,6 +14,9 @@ namespace ThedoorCode.Models
         [Key]
         public int UserId { get; set; }
 
+        // user ID from AspNetUser table.
+        public string OwnerID { get; set; }
+
         [Required]
         [StringLength(150)]
         public string Name { get; set; } = "";
@@ -37,6 +40,11 @@ namespace ThedoorCode.Models
 
         public virtual List<Experience> Experiences { get; set; } = new List<Experience>();// details very important
 
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        public UserStatus Status { get; set; }
+
         public string PhotoUrl { get; set; }
 
         [Required(ErrorMessage = "Please choose the Profile Photo")]
@@ -45,5 +53,12 @@ namespace ThedoorCode.Models
         public IFormFile ProfilePhoto { get; set; }
 
      
+    }
+
+    public enum UserStatus
+    {
+        Submitted,
+        Approved,
+        Rejected
     }
 }

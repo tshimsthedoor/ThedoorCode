@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -81,6 +82,15 @@ namespace ThedoorCode.Controllers
         {
             if (ModelState.IsValid)
             {
+                string wwwRoothPath = _webHost.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(userModel.ProfilePhoto.FileName);
+                string extension = Path.GetExtension(userModel.ProfilePhoto.FileName);
+                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRoothPath + "/Image", fileName);
+                using(var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await userModel.ProfilePhoto.CopyToAsync(fileStream);
+                }
                 _context.Add(userModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -120,6 +130,7 @@ namespace ThedoorCode.Controllers
             {
                 try
                 {
+                   
                     _context.Update(userModel);
                     await _context.SaveChangesAsync();
                 }
