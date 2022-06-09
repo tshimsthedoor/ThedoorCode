@@ -217,7 +217,16 @@ namespace ThedoorCode.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
             var userModel = await _context.UserModels.FindAsync(id);
+
+            // Delete image from wwwroot/images
+            var imagePath = Path.Combine(_webHost.WebRootPath, "images", userModel.PhotoUrl);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
+            // delete the record.
+
             _context.UserModels.Remove(userModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

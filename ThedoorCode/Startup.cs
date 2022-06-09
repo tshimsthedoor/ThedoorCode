@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ThedoorCode.Authorization;
 using ThedoorCode.Data;
 using ThedoorCode.Models;
 
@@ -51,12 +52,23 @@ namespace ThedoorCode
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            // Authorization
             services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
             });
+
+            // Authorization handlers.
+    services.AddScoped<IAuthorizationHandler,
+                          UserIsOwnerAuthorizationHandler>();
+
+    services.AddSingleton<IAuthorizationHandler,
+                          UserAdministratorsAuthorizationHandler>();
+
+    services.AddSingleton<IAuthorizationHandler,
+                          UserManagerAuthorizationHandler>();
 
             services.AddDistributedMemoryCache();
             services.AddSession();
