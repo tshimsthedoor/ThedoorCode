@@ -4,9 +4,16 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Experience</h4>
+<div class="card-header bg-primary text-uppercase text-white text-center" style="height:45px;">
+    <h2>Edit Experience</h2>
+</div>
+
+<br />
+<br />
+
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,7 +22,7 @@
             <input type="hidden" asp-for="ExperienceId" />
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                @Html.DropDownList("UserId", ViewBag.UserId, "Select a Value",new { @class = "form-control" })
+                @Html.DropDownList("UserId", ViewBag.UserId, "Select a Value", new { @class = "form-control" })
                 <input type="hidden" asp-for="UserId" class="form-control" />
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>

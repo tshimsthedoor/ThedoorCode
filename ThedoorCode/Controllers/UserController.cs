@@ -24,12 +24,65 @@ namespace ThedoorCode.Controllers
             _context = context;
             _webHost = webHost;
         }
-        public IActionResult Index()
+
+        //public ViewResult Index()
+        //{
+        //    //Create db context object here 
+        //    AdventureWorksDbContext dbContext = new AdventureWorksDbContext();
+        //    //Get the value from database and then set it to ViewBag to pass it View
+        //    IEnumerable<SelectListItem> items = dbContext.Employees.Select(c => new SelectListItem
+        //    {
+        //        Value = c.JobTitle,
+        //        Text = c.JobTitle
+
+        //    });
+        //    ViewBag.JobTitle = items;
+        //    return View();
+        //}
+        public async Task<IActionResult> Index(string movieGenre, string searchString)
         {
-            List<UserModel> userModels;
-            userModels = _context.UserModels.ToList();
-            return View(userModels);
+            // Use LINQ to get list of genres.
+            IQueryable<string> genreQuery = from m in _context.UserModels
+                                            orderby m.Age
+                                            select m.Name;
+
+            var movies = from m in _context.UserModels
+                         select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Name.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(movieGenre))
+            {
+                movies = movies.Where(x => x.Gender == movieGenre);
+            }
+
+            var movieGenreVM = new UserViewModel
+            {
+                UserQualification = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                UserModel = await movies.ToListAsync()
+            };
+
+            return View(movieGenreVM);
         }
+
+
+
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
+        }
+
+
+        //public IActionResult Index()
+        //{
+        //    List<UserModel> userModels;
+        //    userModels = _context.UserModels.ToList();
+        //    return View(userModels);
+        //}
 
         [HttpGet]
         public IActionResult Create()
@@ -55,7 +108,7 @@ namespace ThedoorCode.Controllers
 
             _context.Add(userModel);
             _context.SaveChanges();
-            return RedirectToAction("index");
+            return RedirectToAction("Index");
         }
 
         private string GetUploadFileName(UserModel userModel)
@@ -73,5 +126,118 @@ namespace ThedoorCode.Controllers
             }
             return uniqueFileName;
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userModel = await _context.UserModels
+                .FirstOrDefaultAsync(m => m.UserId == id);
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(userModel);
+        }
+
+        // GET: UserModels/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userModel = await _context.UserModels.FindAsync(id);
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+            return View(userModel);
+        }
+        // POST: UserModels/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Name,Gender,Age,Qualification,TotalExperience,PhotoUrl")] UserModel userModel)
+        {
+            if (id != userModel.UserId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(userModel);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserModelExists(userModel.UserId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userModel);
+        }
+
+        // GET: UserModels/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userModel = await _context.UserModels
+                .FirstOrDefaultAsync(m => m.UserId == id);
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(userModel);
+        }
+
+        // POST: UserModels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+
+            var userModel = await _context.UserModels.FindAsync(id);
+
+            // Delete image from wwwroot/images
+            var imagePath = Path.Combine(_webHost.WebRootPath, "images", userModel.PhotoUrl);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
+            // delete the record.
+
+            _context.UserModels.Remove(userModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool UserModelExists(int id)
+        {
+            return _context.UserModels.Any(e => e.UserId == id);
+        }
     }
+
+
 }
+
