@@ -78,7 +78,15 @@
                 @Html.DisplayFor(modelItem => item.TotalExperience)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhotoUrl)
+                @* @Html.DisplayFor(modelItem => item.PhotoUrl)*@
+
+              
+
+                @foreach (var ite in Model.UserModel)
+                {
+                    <img src="@("~/images/" + ite.PhotoUrl)" asp-append-version="true" width="250" height="250" />
+                }
+
             </td>
             <td class="text-center">
                 <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.UserId">Edit</a>
