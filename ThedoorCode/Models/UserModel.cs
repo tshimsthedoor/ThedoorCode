@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ThedoorCode.Models
 {
-    public class UserModel
+    public class UserModel : ISoftDelete
     {
         [Key]
         public int UserId { get; set; }
@@ -47,12 +47,14 @@ namespace ThedoorCode.Models
 
         public string PhotoUrl { get; set; }
 
-        [Required(ErrorMessage = "Please choose the Profile Photo")]
+       
         [Display(Name = "Profile Photo")]
         [NotMapped]
         public IFormFile ProfilePhoto { get; set; }
 
-     
+        public bool SoftDeleted { get; set; }
+
+
     }
 
     public enum UserStatus

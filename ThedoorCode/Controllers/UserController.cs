@@ -39,33 +39,34 @@ namespace ThedoorCode.Controllers
         //    ViewBag.JobTitle = items;
         //    return View();
         //}
-        public async Task<IActionResult> Index(string movieGenre, string searchString)
+        public async Task<IActionResult> Index(string gender, string searchString)
         {
-            // Use LINQ to get list of genres.
-            IQueryable<string> genreQuery = from m in _context.UserModels
-                                            orderby m.Age
-                                            select m.Name;
+            // Use LINQ to get list of users.
+            IQueryable<string> userQuery = from m in _context.UserModels
+                                           orderby m.Qualification
+                                           select m.Gender;
 
-            var movies = from m in _context.UserModels
+            var users = from m in _context.UserModels
+                        where !m.SoftDeleted
                          select m;
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                movies = movies.Where(s => s.Name.Contains(searchString));
+                users = users.Where(s => s.Qualification.Contains(searchString));
             }
 
-            if (!string.IsNullOrEmpty(movieGenre))
+            if (!string.IsNullOrEmpty(gender))
             {
-                movies = movies.Where(x => x.Gender == movieGenre);
+                users = users.Where(x => x.Gender == gender);
             }
 
-            var movieGenreVM = new UserViewModel
+            var ListOfSelectedQualification = new UserViewModel
             {
-                UserQualification = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                UserModel = await movies.ToListAsync()
+                UserQualification = new SelectList(await userQuery.Distinct().ToListAsync()),
+                UserModel = await users.ToListAsync()
             };
 
-            return View(movieGenreVM);
+            return View(ListOfSelectedQualification);
         }
 
 
@@ -87,7 +88,7 @@ namespace ThedoorCode.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            UserModel userModel = new UserModel();
+            UserModel userModel = new();
             userModel.Experiences.Add(new Experience() { ExperienceId = 1 });
             //userModel.Experiences.Add(new Experience() { ExperienceId = 2 });
             //userModel.Experiences.Add(new Experience() { ExperienceId = 3 });
@@ -111,17 +112,17 @@ namespace ThedoorCode.Controllers
             return RedirectToAction("Index");
         }
 
-        private string GetUploadFileName(UserModel userModel)
+        private string GetUploadFileName(UserModel user)
         {
             string uniqueFileName = null;
-            if (userModel.ProfilePhoto != null)
+            if (user.ProfilePhoto != null)
             {
                 string uploadFolder = Path.Combine(_webHost.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + userModel.ProfilePhoto.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + user.ProfilePhoto.FileName;
                 string filePath = Path.Combine(uploadFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    userModel.ProfilePhoto.CopyTo(fileStream);
+                    user.ProfilePhoto.CopyTo(fileStream);
                 }
             }
             return uniqueFileName;
@@ -134,14 +135,14 @@ namespace ThedoorCode.Controllers
                 return NotFound();
             }
 
-            var userModel = await _context.UserModels
+            var user = await _context.UserModels
                 .FirstOrDefaultAsync(m => m.UserId == id);
-            if (userModel == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(userModel);
+            return View(user);
         }
 
         // GET: UserModels/Edit/5
@@ -152,21 +153,21 @@ namespace ThedoorCode.Controllers
                 return NotFound();
             }
 
-            var userModel = await _context.UserModels.FindAsync(id);
-            if (userModel == null)
+            var user = await _context.UserModels.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            return View(userModel);
+            return View(user);
         }
         // POST: UserModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Name,Gender,Age,Qualification,TotalExperience,PhotoUrl")] UserModel userModel)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Name,Gender,Age,Qualification,TotalExperience,PhotoUrl")] UserModel user)
         {
-            if (id != userModel.UserId)
+            if (id != user.UserId)
             {
                 return NotFound();
             }
@@ -175,12 +176,12 @@ namespace ThedoorCode.Controllers
             {
                 try
                 {
-                    _context.Update(userModel);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserModelExists(userModel.UserId))
+                    if (!UserModelExists(user.UserId))
                     {
                         return NotFound();
                     }
@@ -191,10 +192,11 @@ namespace ThedoorCode.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userModel);
+            return View(user);
         }
 
         // GET: UserModels/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -202,14 +204,14 @@ namespace ThedoorCode.Controllers
                 return NotFound();
             }
 
-            var userModel = await _context.UserModels
+            var user = await _context.UserModels
                 .FirstOrDefaultAsync(m => m.UserId == id);
-            if (userModel == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(userModel);
+            return View(user);
         }
 
         // POST: UserModels/Delete/5
@@ -218,16 +220,16 @@ namespace ThedoorCode.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
 
-            var userModel = await _context.UserModels.FindAsync(id);
+            var user = await _context.UserModels.FindAsync(id);
 
             // Delete image from wwwroot/images
-            var imagePath = Path.Combine(_webHost.WebRootPath, "images", userModel.PhotoUrl);
-            if (System.IO.File.Exists(imagePath))
-                System.IO.File.Delete(imagePath);
+            //var imagePath = Path.Combine(_webHost.WebRootPath, "images", user.PhotoUrl);
+            //if (System.IO.File.Exists(imagePath))
+            //    System.IO.File.Delete(imagePath);
 
             // delete the record.
 
-            _context.UserModels.Remove(userModel);
+            _context.UserModels.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
