@@ -47,6 +47,7 @@ namespace ThedoorCode.Controllers
                                            select m.Gender;
 
             var users = from m in _context.UserModels
+                        where !m.SoftDeleted
                          select m;
 
             if (!string.IsNullOrEmpty(searchString))

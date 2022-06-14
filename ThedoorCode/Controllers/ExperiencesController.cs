@@ -22,7 +22,7 @@ namespace ThedoorCode.Controllers
         // GET: Experiences
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Experiences.ToListAsync());
+            return View(await _context.Experiences.Where(x => !x.SoftDeleted ).ToListAsync());
         }
 
         // GET: Experiences/Details/5

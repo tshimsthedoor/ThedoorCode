@@ -26,8 +26,8 @@ namespace ThedoorCode.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserModel>().Property<bool>("isDeleted");
-            builder.Entity<UserModel>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+            builder.Entity<UserModel>().Property<bool>("SoftDeleted");
+            builder.Entity<Experience>().HasQueryFilter(m => EF.Property<bool>(m, "SoftDeleted") == false);
         }
 
         public override int SaveChanges()
@@ -36,11 +36,11 @@ namespace ThedoorCode.Data
             return base.SaveChanges();
         }
 
-        //public override Task SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
-        //{
-        //     UpdateSoftDeleteStatuses();
-        //    return  base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        //}
+        public override Task<int>SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
 
         private void UpdateSoftDeleteStatuses()
         {
@@ -49,11 +49,11 @@ namespace ThedoorCode.Data
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.CurrentValues["isDeleted"] = false;
+                        entry.CurrentValues["SoftDeleted"] = false;
                         break;
                     case EntityState.Deleted:
                         entry.State = EntityState.Modified;
-                        entry.CurrentValues["isDeleted"] = true;
+                        entry.CurrentValues["SoftDeleted"] = true;
                         break;
                 }
             }
