@@ -15,6 +15,8 @@ namespace ThedoorCode.Models
         public string TotalExperience { get; set; }
 
         public string SearchString { get; set; }
+
+        public bool SoftDeleted { get; set; }
     }
 
 }

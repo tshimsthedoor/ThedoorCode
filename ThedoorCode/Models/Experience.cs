@@ -28,5 +28,7 @@ namespace ThedoorCode.Models
 
         [Required]
         public int YearsWorked { get; set; }
+
+        public bool SoftDeleted { get; set; }
     }
 }

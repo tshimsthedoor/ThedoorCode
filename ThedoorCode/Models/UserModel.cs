@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ThedoorCode.Models
 {
-    public class UserModel
+    public class UserModel : ISoftDelete
     {
         [Key]
         public int UserId { get; set; }
@@ -52,7 +52,9 @@ namespace ThedoorCode.Models
         [NotMapped]
         public IFormFile ProfilePhoto { get; set; }
 
-     
+        public bool SoftDeleted { get; set; }
+
+
     }
 
     public enum UserStatus

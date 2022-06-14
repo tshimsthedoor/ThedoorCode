@@ -195,6 +195,7 @@ namespace ThedoorCode.Controllers
         }
 
         // GET: UserModels/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -221,9 +222,9 @@ namespace ThedoorCode.Controllers
             var user = await _context.UserModels.FindAsync(id);
 
             // Delete image from wwwroot/images
-            var imagePath = Path.Combine(_webHost.WebRootPath, "images", user.PhotoUrl);
-            if (System.IO.File.Exists(imagePath))
-                System.IO.File.Delete(imagePath);
+            //var imagePath = Path.Combine(_webHost.WebRootPath, "images", user.PhotoUrl);
+            //if (System.IO.File.Exists(imagePath))
+            //    System.IO.File.Delete(imagePath);
 
             // delete the record.
 
